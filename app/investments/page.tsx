@@ -1,7 +1,7 @@
 import { createPageMetadata } from "@/lib/metadata";
 import { JourneyPage } from "@/components/pages/JourneyPage";
 import { images } from "@/content/pages";
-import { ctaLabels, legal } from "@/content/business";
+import { ctaLabels } from "@/content/business";
 
 export const metadata = createPageMetadata({
   title: "Real Estate Investment",
@@ -27,7 +27,6 @@ export default function InvestmentsPage() {
         { number: "05", title: "Due diligence", description: "Property inspection, financial review, legal title search, and environmental assessments as appropriate." },
         { number: "06", title: "Next steps", description: "Discuss specific opportunities and develop a strategy aligned with your investment profile." },
       ]}
-      disclaimer={legal.investmentDisclaimer}
     />
   );
 }

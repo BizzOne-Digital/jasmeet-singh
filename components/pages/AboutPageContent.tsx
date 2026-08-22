@@ -27,7 +27,7 @@ export function AboutPageContent() {
       <section className="bg-warm-white py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-5 text-center md:px-8">
           <AnimatedReveal>
-            <span className="font-display text-[clamp(4rem,10vw,8rem)] leading-none text-gold/20">
+            <span className="font-display text-[clamp(4rem,10vw,8rem)] leading-none text-black">
               JASMEET
             </span>
             <GoldDivider className="mx-auto my-6" />

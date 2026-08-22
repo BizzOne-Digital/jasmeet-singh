@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -49,13 +50,16 @@ export function Header() {
     <>
       <header
         className={cn(
-          "z-50 w-full max-w-[100vw] overflow-x-hidden transition-all duration-500",
+          "z-[60] w-full overflow-visible transition-all duration-500",
+          isHome
+            ? "fixed inset-x-0 top-0"
+            : "sticky top-0",
           isHome && (!mounted || isOverlay)
-            ? "fixed inset-x-0 top-0 border-none bg-gradient-to-b from-black/80 via-black/40 to-transparent shadow-none"
-            : "sticky top-0 border-b border-gold-border bg-black/95 shadow-lg backdrop-blur-md"
+            ? "border-none bg-gradient-to-b from-black/80 via-black/40 to-transparent shadow-none"
+            : "border-b border-gold-border bg-black/95 shadow-lg backdrop-blur-md"
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:px-5 md:px-8 md:py-4 lg:grid lg:grid-cols-[200px_1fr_200px] lg:gap-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-visible px-4 py-2.5 sm:px-5 md:px-8 md:py-4 lg:grid lg:grid-cols-[200px_1fr_200px] lg:gap-4">
           {/* Logo */}
           <Link href="/" className="relative z-50 shrink-0">
             <Image
@@ -70,7 +74,7 @@ export function Header() {
 
           {/* Desktop Nav — centred */}
           <nav
-            className="hidden items-center justify-center gap-0.5 lg:flex"
+            className="hidden items-center justify-center gap-0.5 overflow-visible lg:flex"
             aria-label="Main navigation"
           >
             {headerNav.map((item) =>
@@ -197,51 +201,122 @@ function DesktopDropdown({
   setOpenDropdown: (v: string | null) => void;
   overlay: boolean;
 }) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const isGroupActive = group.items.some((i) => isActive(i.href));
   const isOpen = openDropdown === group.label;
+
+  const updateMenuPosition = useCallback(() => {
+    const button = buttonRef.current;
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    setMenuPosition({
+      top: rect.bottom + 6,
+      left: rect.left + rect.width / 2,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updateMenuPosition();
+
+    const handleReposition = () => updateMenuPosition();
+    window.addEventListener("scroll", handleReposition, { passive: true });
+    window.addEventListener("resize", handleReposition);
+
+    return () => {
+      window.removeEventListener("scroll", handleReposition);
+      window.removeEventListener("resize", handleReposition);
+    };
+  }, [isOpen, updateMenuPosition]);
+
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    },
+    []
+  );
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(() => setOpenDropdown(null), 120);
+  };
+
+  const openMenu = () => {
+    clearCloseTimer();
+    setOpenDropdown(group.label);
+  };
 
   return (
     <div
       className="relative"
-      onMouseEnter={() => setOpenDropdown(group.label)}
-      onMouseLeave={() => setOpenDropdown(null)}
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleClose}
     >
       <button
+        ref={buttonRef}
         className={cn(
           "flex items-center gap-1 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] transition-colors hover:text-gold xl:px-4 xl:text-xs",
           overlay ? "text-white/90" : "text-white/80",
-          isGroupActive && "text-gold"
+          isGroupActive && "text-gold",
+          isOpen && "text-gold"
         )}
         aria-expanded={isOpen}
+        aria-haspopup="true"
         onClick={() => setOpenDropdown(isOpen ? null : group.label)}
       >
         {group.label}
         <ChevronDown className={cn("h-3 w-3 transition-transform", isOpen && "rotate-180")} />
       </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-1/2 top-full z-50 min-w-[240px] -translate-x-1/2 border border-gold-border bg-black py-2 shadow-xl"
-          >
-            {group.items.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block px-4 py-2.5 transition-colors hover:bg-white/5 hover:text-gold"
+
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.2 }}
+                style={{ top: menuPosition.top, left: menuPosition.left }}
+                className="fixed z-[120] min-w-[260px] -translate-x-1/2"
+                onMouseEnter={openMenu}
+                onMouseLeave={scheduleClose}
               >
-                <span className="text-sm text-white">{item.label}</span>
-                {item.description && (
-                  <span className="mt-0.5 block text-xs text-white/50">{item.description}</span>
-                )}
-              </Link>
-            ))}
-          </motion.div>
+                <div className="border border-gold-border bg-black py-2 shadow-2xl">
+                  {group.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block px-4 py-3 transition-colors hover:bg-white/5 hover:text-gold"
+                      onClick={() => setOpenDropdown(null)}
+                    >
+                      <span className="block text-sm font-medium text-white">{item.label}</span>
+                      {item.description && (
+                        <span className="mt-0.5 block text-xs leading-relaxed text-white/50">
+                          {item.description}
+                        </span>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </div>
   );
 }

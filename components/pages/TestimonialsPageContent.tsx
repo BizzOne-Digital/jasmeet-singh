@@ -54,13 +54,6 @@ export function TestimonialsPageContent() {
               </AnimatedReveal>
             ))}
           </div>
-
-          <AnimatedReveal>
-            <div className="mt-12 border border-gold-border bg-ivory p-12 text-center">
-              <p className="text-xs uppercase tracking-wider text-gold">Video testimonials</p>
-              <p className="mt-2 font-display text-xl">Client video stories coming soon</p>
-            </div>
-          </AnimatedReveal>
         </div>
       </section>
 
