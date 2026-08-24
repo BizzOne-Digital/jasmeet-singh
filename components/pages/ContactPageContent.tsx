@@ -4,6 +4,7 @@ import { business } from "@/content/business";
 import { images } from "@/content/pages";
 import { PageHero } from "@/components/ui/PageHero";
 import { AnimatedReveal } from "@/components/motion/AnimatedReveal";
+import { ContactForm } from "@/components/forms/ContactForm";
 
 const contactCards = [
   {
@@ -50,7 +51,7 @@ export function ContactPageContent() {
       <PageHero
         eyebrow="CONTACT"
         title="Let's talk about your next move."
-        description="Reach out directly — no forms, just personal communication."
+        description="Send an inquiry through the form below, or reach out directly on WhatsApp, phone, or email."
         image={images.hero.contact}
         imageAlt="Keys and property — contact Jasmeet Singh"
         breadcrumbs={[{ label: "Contact" }]}
@@ -58,7 +59,11 @@ export function ContactPageContent() {
 
       <section className="bg-warm-white py-20 md:py-28">
         <div className="mx-auto max-w-5xl px-5 md:px-8">
-          <div className="grid gap-6 md:grid-cols-2">
+          <AnimatedReveal>
+            <ContactForm />
+          </AnimatedReveal>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2">
             {contactCards.map((card, i) => (
               <AnimatedReveal key={card.title} delay={i * 0.1}>
                 <Link

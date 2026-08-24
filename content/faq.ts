@@ -132,6 +132,6 @@ export const faqs: FAQItem[] = [
     category: "service",
     question: "Is there a contact form on this website?",
     answer:
-      "No. This site uses direct contact methods — WhatsApp, phone, email, and Instagram — to ensure prompt, personal communication.",
+      "Yes. You can use the contact form on the Contact page to send an inquiry directly by email. You can also reach out on WhatsApp, phone, email, or Instagram for a faster response.",
   },
 ];

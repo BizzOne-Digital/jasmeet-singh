@@ -3,7 +3,7 @@ import { ContactPageContent } from "@/components/pages/ContactPageContent";
 
 export const metadata = createPageMetadata({
   title: "Contact",
-  description: "Contact Jasmeet Singh directly via WhatsApp, phone, email, or Instagram. No forms — just personal communication.",
+  description: "Contact Jasmeet Singh via the inquiry form, WhatsApp, phone, or email.",
   path: "/contact",
 });
 
