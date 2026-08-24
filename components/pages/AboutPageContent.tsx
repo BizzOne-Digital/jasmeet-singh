@@ -23,18 +23,20 @@ export function AboutPageContent() {
         image={images.hero.about}
         imageAlt="Real estate keys and property — Ontario"
         breadcrumbs={[{ label: "About" }]}
+        compact
       />
 
-      <section className="bg-warm-white py-20 md:py-28">
+      <section className="bg-warm-white pb-16 pt-6 md:pb-24 md:pt-8">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
-          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16 lg:gap-20">
+          <div className="grid items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
             <AnimatedReveal>
-              <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden bg-white md:mx-0 md:max-w-none">
+              <div className="relative mx-auto w-full max-w-sm md:mx-0 md:max-w-none">
                 <Image
                   src="/images/jasmeet-portrait.png"
                   alt="Jasmeet Singh — Ontario real estate professional"
-                  fill
-                  className="object-contain object-bottom"
+                  width={600}
+                  height={900}
+                  className="h-auto w-full max-h-[min(58vh,520px)] object-contain object-bottom"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                 />
