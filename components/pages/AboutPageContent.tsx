@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { aboutContent } from "@/content/about";
 import { business, ctaLabels } from "@/content/business";
@@ -25,16 +26,33 @@ export function AboutPageContent() {
       />
 
       <section className="bg-warm-white py-20 md:py-28">
-        <div className="mx-auto max-w-3xl px-5 text-center md:px-8">
-          <AnimatedReveal>
-            <span className="font-display text-[clamp(4rem,10vw,8rem)] leading-none text-black">
-              JASMEET
-            </span>
-            <GoldDivider className="mx-auto my-6" />
-            <p className="text-lg leading-relaxed text-muted-text md:text-xl">
-              {aboutContent.intro.biography}
-            </p>
-          </AnimatedReveal>
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16 lg:gap-20">
+            <AnimatedReveal>
+              <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden bg-white md:mx-0 md:max-w-none">
+                <Image
+                  src="/images/jasmeet-portrait.png"
+                  alt="Jasmeet Singh — Ontario real estate professional"
+                  fill
+                  className="object-contain object-bottom"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+              </div>
+            </AnimatedReveal>
+
+            <AnimatedReveal delay={0.1}>
+              <div className="text-center md:text-left">
+                <span className="font-display text-[clamp(3rem,8vw,6rem)] leading-none text-black">
+                  JASMEET
+                </span>
+                <GoldDivider className="mx-auto my-6 md:mx-0" />
+                <p className="text-lg leading-relaxed text-muted-text md:text-xl">
+                  {aboutContent.intro.biography}
+                </p>
+              </div>
+            </AnimatedReveal>
+          </div>
         </div>
       </section>
 
