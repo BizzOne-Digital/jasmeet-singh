@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import type { ContactFormPayload } from "@/lib/contact";
+import type { PropertyFinderPayload } from "@/lib/property-finder";
+import { buildPropertyFinderWhatsAppMessage } from "@/lib/property-finder";
 
 function getSmtpConfig() {
   const user = process.env.SMTP_USER;
@@ -141,5 +143,123 @@ export async function sendContactEmail(payload: ContactFormPayload) {
     subject,
     text: buildContactEmailText(payload),
     html: buildContactEmailHtml(payload),
+  });
+}
+
+function formatSelectionLabel(key: string): string {
+  return key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (char) => char.toUpperCase())
+    .trim();
+}
+
+export function buildPropertyFinderEmailHtml(payload: PropertyFinderPayload): string {
+  const phoneDisplay = formatPhoneDisplay(payload.phone);
+  const normalizedPhone = normalizePhone(payload.phone);
+  const whatsappMessage = buildPropertyFinderWhatsAppMessage(payload.name, payload.selections);
+  const whatsappUrl = buildWhatsAppUrl(payload.phone, whatsappMessage);
+
+  const selectionRows = Object.entries(payload.selections)
+    .filter(([, value]) => value)
+    .map(
+      ([key, value]) => `
+        <tr>
+          <td style="padding: 8px 0; font-weight: bold; width: 160px;">${escapeHtml(formatSelectionLabel(key))}</td>
+          <td style="padding: 8px 0;">${escapeHtml(value)}</td>
+        </tr>`
+    )
+    .join("");
+
+  return `
+    <div style="font-family: Arial, sans-serif; color: #111; line-height: 1.6; max-width: 640px;">
+      <h2 style="margin: 0 0 16px; color: #111;">New Property Finder inquiry</h2>
+      <p style="margin: 0 0 20px;">Someone completed the Property Finder on your website.</p>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px 0; font-weight: bold; width: 160px;">Name</td>
+          <td style="padding: 8px 0;">${escapeHtml(payload.name)}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; font-weight: bold;">WhatsApp number</td>
+          <td style="padding: 8px 0;">
+            <a href="tel:+${normalizedPhone}" style="color: #8e6b2e; text-decoration: none;">${escapeHtml(phoneDisplay)}</a>
+          </td>
+        </tr>
+        ${
+          payload.email
+            ? `<tr>
+          <td style="padding: 8px 0; font-weight: bold;">Email</td>
+          <td style="padding: 8px 0;"><a href="mailto:${escapeHtml(payload.email)}" style="color: #8e6b2e; text-decoration: none;">${escapeHtml(payload.email)}</a></td>
+        </tr>`
+            : ""
+        }
+      </table>
+
+      <div style="margin: 24px 0; padding: 16px; background: #fbfaf7; border-left: 4px solid #c8a45a;">
+        <p style="margin: 0 0 12px; font-weight: bold;">Property preferences</p>
+        <table style="width: 100%; border-collapse: collapse;">
+          ${selectionRows}
+        </table>
+      </div>
+
+      <div style="margin: 24px 0; padding: 16px; background: #111; color: #fff;">
+        <p style="margin: 0 0 12px; font-weight: bold; color: #c8a45a;">Chat on WhatsApp</p>
+        <p style="margin: 0 0 16px; color: #fff;">Pre-filled message:</p>
+        <p style="margin: 0 0 16px; color: #fff; white-space: pre-wrap;">${escapeHtml(whatsappMessage)}</p>
+        <a href="${whatsappUrl}" style="display: inline-block; padding: 12px 18px; background: #c8a45a; color: #111; text-decoration: none; font-weight: bold;">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+export function buildPropertyFinderEmailText(payload: PropertyFinderPayload): string {
+  const phoneDisplay = formatPhoneDisplay(payload.phone);
+  const whatsappMessage = buildPropertyFinderWhatsAppMessage(payload.name, payload.selections);
+
+  const selectionLines = Object.entries(payload.selections)
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${formatSelectionLabel(key)}: ${value}`);
+
+  return [
+    "New Property Finder inquiry",
+    "",
+    `Name: ${payload.name}`,
+    `WhatsApp number: ${phoneDisplay}`,
+    payload.email ? `Email: ${payload.email}` : null,
+    "",
+    "Property preferences:",
+    ...selectionLines,
+    "",
+    "Pre-filled WhatsApp message:",
+    whatsappMessage,
+    "",
+    `WhatsApp: https://wa.me/${normalizePhone(payload.phone)}?text=${encodeURIComponent(whatsappMessage)}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+export async function sendPropertyFinderEmail(payload: PropertyFinderPayload) {
+  const { user, pass, host, port, to } = getSmtpConfig();
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
+  const subject = `Property Finder: ${payload.selections.goal || "Inquiry"} — ${payload.name}`;
+
+  await transporter.sendMail({
+    from: `"Jasmeet Singh Real Estate" <${user}>`,
+    to,
+    replyTo: payload.email || undefined,
+    subject,
+    text: buildPropertyFinderEmailText(payload),
+    html: buildPropertyFinderEmailHtml(payload),
   });
 }
