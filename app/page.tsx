@@ -1,5 +1,6 @@
 import { createPageMetadata } from "@/lib/metadata";
 import { HomeHero } from "@/components/sections/HomeHero";
+import { AffordabilityPopup } from "@/components/sections/AffordabilityPopup";
 import { BrandMarquee } from "@/components/sections/BrandMarquee";
 import { SignatureServices } from "@/components/sections/SignatureServices";
 import { SectorSplit } from "@/components/sections/SectorSplit";
@@ -21,6 +22,7 @@ export const metadata = createPageMetadata({
 export default function HomePage() {
   return (
     <>
+      <AffordabilityPopup />
       <HomeHero />
       <BrandMarquee />
       <SignatureServices />
