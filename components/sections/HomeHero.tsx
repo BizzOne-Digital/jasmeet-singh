@@ -53,8 +53,8 @@ export function HomeHero() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
       {/* Content — left aligned, vertically centred */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-28 pt-24 sm:px-5 md:px-8 md:pb-24 md:pt-32">
-        <div className="max-w-2xl overflow-hidden">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-28 pt-28 sm:px-5 md:px-8 md:pb-24 md:pt-36">
+        <div className="mt-6 max-w-2xl overflow-hidden sm:mt-8 md:mt-12">
           <motion.p
             className="mb-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold sm:mb-5 sm:text-[11px] sm:tracking-[0.25em] md:text-xs"
             initial={prefersReducedMotion ? {} : { opacity: 0, y: 16 }}
