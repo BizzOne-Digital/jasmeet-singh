@@ -9,6 +9,7 @@ import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { business, ctaLabels } from "@/content/business";
 import { headerNav, isNavGroup, type NavGroup } from "@/content/navigation";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -112,7 +113,7 @@ export function Header() {
           {/* WhatsApp CTA — outline style */}
           <div className="hidden items-center justify-end lg:flex">
             <Link
-              href={business.whatsapp.url}
+              href={getWhatsAppHref()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-gold/80 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-gold transition-all hover:bg-gold/10 xl:px-5 xl:text-[11px]"
@@ -171,7 +172,7 @@ export function Header() {
               )}
               <div className="mt-8">
                 <Link
-                  href={business.whatsapp.url}
+                  href={getWhatsAppHref()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 bg-gold-gradient py-3.5 text-sm font-semibold uppercase tracking-wider text-black"

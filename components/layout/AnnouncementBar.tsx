@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Instagram, MessageCircle, Phone } from "lucide-react";
 import { business } from "@/content/business";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 
 export function AnnouncementBar() {
   const pathname = usePathname();
@@ -36,7 +37,7 @@ export function AnnouncementBar() {
             <Instagram className="h-3.5 w-3.5" />
           </Link>
           <Link
-            href={business.whatsapp.url}
+            href={getWhatsAppHref()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"

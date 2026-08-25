@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Phone, Instagram, MessageCircle } from "lucide-react";
 import { business } from "@/content/business";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 
 export function MobileActionBar() {
   return (
@@ -16,7 +17,7 @@ export function MobileActionBar() {
           <span className="text-[10px] uppercase tracking-wider">Call</span>
         </Link>
         <Link
-          href={business.whatsapp.url}
+          href={getWhatsAppHref()}
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center gap-1 border-x border-gold-border py-3 text-gold transition-colors hover:text-bright-gold active:text-bright-gold"

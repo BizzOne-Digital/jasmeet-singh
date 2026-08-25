@@ -21,6 +21,8 @@ export const business = {
   },
   whatsapp: {
     url: process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://wa.me/message/7PKVI5UK46YQI1",
+    defaultMessage:
+      "Hi Jasmeet, I'm interested in your real estate services. I'd like to speak with you.",
     label: "Chat on WhatsApp",
   },
   instagram: {

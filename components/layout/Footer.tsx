@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Instagram, MessageCircle, Phone, Mail } from "lucide-react";
 import { business } from "@/content/business";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 import { footerLinks } from "@/content/navigation";
 import { GoldDivider } from "@/components/ui/GoldDivider";
 
@@ -72,7 +73,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href={business.whatsapp.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-gold">
+                <Link href={getWhatsAppHref()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-gold">
                   <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
                   WhatsApp
                 </Link>

@@ -10,30 +10,19 @@ export interface WhatsAppMessageParams {
   customMessage?: string;
 }
 
-export function buildWhatsAppUrl(params?: WhatsAppMessageParams): string {
+function getWhatsAppPhoneDigits(): string {
+  const raw = process.env.NEXT_PUBLIC_PHONE ?? "+16478610008";
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length === 10) return `1${digits}`;
+  return digits;
+}
+
+/** wa.me/message/ links don't support prefill — use phone-based URL with text instead. */
+function withWhatsAppText(message: string): string {
   const baseUrl = business.whatsapp.url;
 
-  if (!params) return baseUrl;
-
-  const parts: string[] = [];
-
-  if (params.customMessage) {
-    parts.push(params.customMessage);
-  } else {
-    parts.push("Hi Jasmeet, I'd like to discuss my real estate goals.");
-    if (params.goal) parts.push(`Goal: ${params.goal}`);
-    if (params.sector) parts.push(`Sector: ${params.sector}`);
-    if (params.area) parts.push(`Area: ${params.area}`);
-    if (params.propertyType) parts.push(`Property type: ${params.propertyType}`);
-    if (params.budget) parts.push(`Budget: ${params.budget}`);
-    if (params.timeline) parts.push(`Timeline: ${params.timeline}`);
-  }
-
-  const message = parts.join("\n");
-
-  // wa.me/message/ links don't support text param — append only for standard wa.me/number links
   if (baseUrl.includes("/message/")) {
-    return baseUrl;
+    return `https://wa.me/${getWhatsAppPhoneDigits()}?text=${encodeURIComponent(message)}`;
   }
 
   const encoded = encodeURIComponent(message);
@@ -41,9 +30,33 @@ export function buildWhatsAppUrl(params?: WhatsAppMessageParams): string {
   return `${baseUrl}${separator}text=${encoded}`;
 }
 
+export function getWhatsAppDefaultMessage(): string {
+  return business.whatsapp.defaultMessage;
+}
+
+export function buildWhatsAppUrl(params?: WhatsAppMessageParams): string {
+  if (!params) {
+    return withWhatsAppText(getWhatsAppDefaultMessage());
+  }
+
+  if (params.customMessage) {
+    return withWhatsAppText(params.customMessage);
+  }
+
+  const parts: string[] = ["Hi Jasmeet, I'd like to discuss my real estate goals."];
+  if (params.goal) parts.push(`Goal: ${params.goal}`);
+  if (params.sector) parts.push(`Sector: ${params.sector}`);
+  if (params.area) parts.push(`Area: ${params.area}`);
+  if (params.propertyType) parts.push(`Property type: ${params.propertyType}`);
+  if (params.budget) parts.push(`Budget: ${params.budget}`);
+  if (params.timeline) parts.push(`Timeline: ${params.timeline}`);
+
+  return withWhatsAppText(parts.join("\n"));
+}
+
 export function getWhatsAppHref(message?: string): string {
   if (message) {
-    return buildWhatsAppUrl({ customMessage: message });
+    return withWhatsAppText(message);
   }
-  return business.whatsapp.url;
+  return withWhatsAppText(getWhatsAppDefaultMessage());
 }

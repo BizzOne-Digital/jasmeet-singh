@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone, Mail, Instagram, MessageCircle, MapPin } from "lucide-react";
 import { business } from "@/content/business";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 import { images } from "@/content/pages";
 import { PageHero } from "@/components/ui/PageHero";
 import { AnimatedReveal } from "@/components/motion/AnimatedReveal";
@@ -11,7 +12,7 @@ const contactCards = [
     icon: MessageCircle,
     title: "WhatsApp",
     description: "The fastest way to start a conversation about your real estate goals.",
-    href: business.whatsapp.url,
+    href: getWhatsAppHref(),
     label: "Message on WhatsApp",
     primary: true,
     external: true,

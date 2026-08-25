@@ -6,6 +6,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { Home, MessageCircle } from "lucide-react";
 import { business, ctaLabels } from "@/content/business";
+import { getWhatsAppHref } from "@/lib/whatsapp";
 import { homeContent, images } from "@/content/pages";
 
 function ScrollIndicator() {
@@ -90,7 +91,7 @@ export function HomeHero() {
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <Link
-              href={business.whatsapp.url}
+              href={getWhatsAppHref()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex w-full items-center justify-center gap-2.5 bg-gold-gradient px-5 py-3.5 text-xs font-semibold uppercase tracking-[0.12em] text-black transition-all hover:brightness-110 sm:w-auto sm:px-6 md:px-7 md:text-sm"
