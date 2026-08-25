@@ -8,11 +8,7 @@ export const business = {
   brand: "Jasmeet Singh Real Estate",
   tagline: "Turning Dreams Into Addresses",
   brokerage: {
-    /** Display until client provides exact legally approved wording */
     display: "Brokerage — HomeLife Miracle",
-    /** TODO: Replace with client-approved legal disclosure text */
-    disclosure:
-      "[TODO: Insert legally approved brokerage disclosure wording provided by Jasmeet Singh and HomeLife Miracle.]",
   },
   phone: {
     display: "647-861-0008",

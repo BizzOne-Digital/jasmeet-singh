@@ -9,8 +9,8 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="w-full max-w-[100vw] overflow-x-hidden bg-black text-white pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
-      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+    <footer className="w-full max-w-[100vw] overflow-x-hidden bg-black text-white pb-[calc(3.75rem+env(safe-area-inset-bottom,0px))] md:pb-0">
+      <div className="mx-auto max-w-7xl px-5 pt-16 pb-8 md:px-8 md:pt-20 md:pb-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
@@ -100,10 +100,6 @@ export function Footer() {
             ))}
           </div>
         </div>
-
-        <p className="mt-4 text-xs leading-relaxed text-white/30">
-          {business.brokerage.disclosure}
-        </p>
       </div>
     </footer>
   );

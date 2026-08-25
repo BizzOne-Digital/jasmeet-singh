@@ -56,8 +56,8 @@ export function PageHero({
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/35 md:via-black/75 md:to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-black/40 md:via-black/60 md:to-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
         </>
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-black via-charcoal to-soft-black" />

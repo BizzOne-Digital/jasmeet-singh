@@ -27,24 +27,24 @@ export function AboutPageContent() {
       />
 
       <section className="bg-warm-white pb-16 pt-6 md:pb-24 md:pt-8">
-        <div className="mx-auto max-w-7xl px-5 md:px-8">
-          <div className="grid items-start gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
-            <AnimatedReveal>
-              <div className="relative mx-auto w-full max-w-sm md:mx-0 md:max-w-none">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-6 md:flex-row md:items-end md:justify-start md:gap-3 lg:gap-5">
+            <AnimatedReveal className="w-full md:w-auto md:shrink-0 md:-ml-2 lg:-ml-4">
+              <div className="relative mx-auto md:mx-0">
                 <Image
                   src="/images/jasmeet-portrait.png"
                   alt="Jasmeet Singh — Ontario real estate professional"
-                  width={600}
-                  height={900}
-                  className="h-auto w-full max-h-[min(58vh,520px)] object-contain object-bottom"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  width={700}
+                  height={1050}
+                  className="h-auto w-full max-h-[min(72vh,670px)] object-contain object-bottom md:w-[min(58vw,630px)] md:max-h-[min(90vh,880px)] lg:w-[min(56vw,695px)] lg:max-h-[min(92vh,920px)]"
+                  sizes="(max-width: 768px) 100vw, 630px"
                   priority
                 />
               </div>
             </AnimatedReveal>
 
-            <AnimatedReveal delay={0.1}>
-              <div className="text-center md:text-left">
+            <AnimatedReveal delay={0.1} className="w-full md:max-w-md md:-ml-4 md:-mt-10 lg:max-w-lg lg:-ml-8 lg:-mt-14">
+              <div className="text-center md:pb-4 md:text-left lg:pb-6">
                 <span className="font-display text-[clamp(3rem,8vw,6rem)] leading-none text-black">
                   JASMEET
                 </span>
