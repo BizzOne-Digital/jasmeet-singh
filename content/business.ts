@@ -32,9 +32,9 @@ export const business = {
   sectors: ["Residential", "Commercial"] as const,
   logo: {
     src: "/brand/jasmeet-singh-logo.png",
-    alt: "Jasmeet Singh Real Estate — Buy, Sell, Invest",
-    width: 400,
-    height: 500,
+    alt: "Jasmeet Singh Realty",
+    width: 1024,
+    height: 361,
   },
   /** TODO: Replace with client-confirmed availability wording */
   availability:

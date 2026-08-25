@@ -17,9 +17,9 @@ export function Footer() {
             <Image
               src={business.logo.src}
               alt={business.logo.alt}
-              width={200}
-              height={250}
-              className="h-auto w-48 md:w-56"
+              width={business.logo.width}
+              height={business.logo.height}
+              className="h-auto w-64 md:w-80 lg:w-96"
             />
             <p className="mt-4 font-display text-lg italic text-gold">
               {business.tagline}

@@ -60,10 +60,10 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
             <Image
               src={business.logo.src}
               alt={business.logo.alt}
-              width={180}
-              height={225}
+              width={business.logo.width}
+              height={business.logo.height}
               priority
-              className="h-auto w-32 max-w-[65vw] sm:w-40 md:w-52"
+              className="h-auto w-56 max-w-[88vw] sm:w-64 md:w-80 lg:w-96"
             />
           </motion.div>
 

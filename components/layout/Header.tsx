@@ -59,15 +59,15 @@ export function Header() {
             : "border-b border-gold-border bg-black/95 shadow-lg backdrop-blur-md"
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-visible px-4 py-2.5 sm:px-5 md:px-8 md:py-3 lg:grid lg:grid-cols-[240px_1fr_240px] lg:gap-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-visible px-4 py-2.5 sm:px-5 md:px-8 md:py-3 lg:grid lg:grid-cols-[minmax(0,320px)_1fr_minmax(0,280px)] lg:gap-4">
           {/* Logo */}
           <Link href="/" className="relative z-50 shrink-0">
             <Image
               src={business.logo.src}
               alt={business.logo.alt}
-              width={200}
-              height={250}
-              className="h-12 w-auto sm:h-14 md:h-[4.5rem] lg:h-20"
+              width={business.logo.width}
+              height={business.logo.height}
+              className="h-14 w-auto sm:h-16 md:h-[5.5rem] lg:h-24 xl:h-28"
               priority
             />
           </Link>
