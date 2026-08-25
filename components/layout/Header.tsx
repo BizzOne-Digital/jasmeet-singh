@@ -5,10 +5,11 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
+import { Menu, X, ChevronDown, MessageCircle, Calculator } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { business, ctaLabels } from "@/content/business";
 import { headerNav, isNavGroup, type NavGroup } from "@/content/navigation";
+import { useAffordabilityPopup } from "@/components/sections/AffordabilityPopup";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ export function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isOverlay = isHome && !scrolled;
+  const { open: openAffordabilityPopup } = useAffordabilityPopup();
 
   useEffect(() => {
     setMounted(true);
@@ -60,7 +62,7 @@ export function Header() {
             : "border-b border-gold-border bg-black/95 shadow-lg backdrop-blur-md"
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-visible px-4 py-2.5 sm:px-5 md:px-8 md:py-3 lg:grid lg:grid-cols-[minmax(0,320px)_1fr_minmax(0,280px)] lg:gap-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 overflow-visible px-4 py-2.5 sm:px-5 md:px-8 md:py-3 lg:grid lg:grid-cols-[minmax(0,320px)_1fr_minmax(0,380px)] lg:gap-4">
           {/* Logo */}
           <Link href="/" className="relative z-50 shrink-0">
             <Image
@@ -110,8 +112,16 @@ export function Header() {
             )}
           </nav>
 
-          {/* WhatsApp CTA — outline style */}
-          <div className="hidden items-center justify-end lg:flex">
+          {/* Header actions — desktop */}
+          <div className="hidden items-center justify-end gap-2 lg:flex">
+            <button
+              type="button"
+              onClick={openAffordabilityPopup}
+              className="inline-flex items-center gap-2 border border-gold/80 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-gold transition-all hover:bg-gold/10 xl:px-5 xl:text-[11px]"
+            >
+              <Calculator className="h-3.5 w-3.5" aria-hidden="true" />
+              Calculator
+            </button>
             <Link
               href={getWhatsAppHref()}
               target="_blank"
@@ -123,15 +133,34 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="relative z-50 flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-white lg:hidden"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Mobile header actions */}
+          <div className="flex items-center gap-1 lg:hidden">
+            <button
+              type="button"
+              onClick={openAffordabilityPopup}
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-gold transition-colors hover:text-bright-gold"
+              aria-label="Open affordability calculator"
+            >
+              <Calculator className="h-5 w-5" />
+            </button>
+            <Link
+              href={getWhatsAppHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-gold transition-colors hover:text-bright-gold"
+              aria-label={business.whatsapp.label}
+            >
+              <MessageCircle className="h-5 w-5" />
+            </Link>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="relative z-50 flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-white"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -170,7 +199,18 @@ export function Header() {
                   </Link>
                 )
               )}
-              <div className="mt-8">
+              <div className="mt-8 flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    openAffordabilityPopup();
+                  }}
+                  className="flex w-full items-center justify-center gap-2 border border-gold/80 py-3.5 text-sm font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold/10"
+                >
+                  <Calculator className="h-4 w-4" />
+                  Calculator
+                </button>
                 <Link
                   href={getWhatsAppHref()}
                   target="_blank"

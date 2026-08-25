@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Home, MessageCircle } from "lucide-react";
-import { business, ctaLabels } from "@/content/business";
+import { ctaLabels } from "@/content/business";
 import { getWhatsAppHref } from "@/lib/whatsapp";
 import { homeContent, images } from "@/content/pages";
 

@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { business } from "@/content/business";
@@ -9,23 +17,47 @@ import { AffordabilityCalculatorContent } from "@/components/sections/Affordabil
 
 const POPUP_KEY = "jsre-affordability-popup-dismissed";
 
-export function AffordabilityPopup() {
+type AffordabilityPopupContextValue = {
+  open: () => void;
+  close: () => void;
+};
+
+const AffordabilityPopupContext = createContext<AffordabilityPopupContextValue | null>(null);
+
+export function useAffordabilityPopup(): AffordabilityPopupContextValue {
+  const context = useContext(AffordabilityPopupContext);
+  if (!context) {
+    throw new Error("useAffordabilityPopup must be used within AffordabilityPopupProvider");
+  }
+  return context;
+}
+
+export function AffordabilityPopupProvider({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const openPopup = useCallback(() => setOpen(true), []);
+
+  const closePopup = useCallback(() => {
+    sessionStorage.setItem(POPUP_KEY, "true");
+    setOpen(false);
+  }, []);
+
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const dismissed = sessionStorage.getItem(POPUP_KEY);
     if (dismissed) return;
 
     const timer = window.setTimeout(() => setOpen(true), 700);
-
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") closePopup();
     };
 
     document.body.style.overflow = "hidden";
@@ -35,13 +67,23 @@ export function AffordabilityPopup() {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open]);
+  }, [open, closePopup]);
 
-  const close = () => {
-    sessionStorage.setItem(POPUP_KEY, "true");
-    setOpen(false);
-  };
+  return (
+    <AffordabilityPopupContext.Provider value={{ open: openPopup, close: closePopup }}>
+      {children}
+      <AffordabilityPopupDialog open={open} onClose={closePopup} />
+    </AffordabilityPopupContext.Provider>
+  );
+}
 
+function AffordabilityPopupDialog({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   return (
     <AnimatePresence>
       {open && (
@@ -58,7 +100,7 @@ export function AffordabilityPopup() {
             type="button"
             className="absolute inset-0 bg-black/78"
             aria-label="Close affordability calculator"
-            onClick={close}
+            onClick={onClose}
           />
 
           <motion.div
@@ -70,7 +112,7 @@ export function AffordabilityPopup() {
           >
             <button
               type="button"
-              onClick={close}
+              onClick={onClose}
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-gold hover:text-gold"
               aria-label="Close"
             >
@@ -90,7 +132,8 @@ export function AffordabilityPopup() {
                 </h2>
                 <GoldDivider className="mx-auto my-5" width="w-16" />
                 <p className="mx-auto max-w-md text-sm leading-relaxed text-white/65">
-                  Estimate how much home you may qualify for based on Canadian GDS/TDS ratios and the mortgage stress test.
+                  Estimate how much home you may qualify for based on Canadian GDS/TDS ratios and
+                  the mortgage stress test.
                 </p>
               </div>
 
@@ -105,7 +148,7 @@ export function AffordabilityPopup() {
               <div className="mt-8 text-center">
                 <button
                   type="button"
-                  onClick={close}
+                  onClick={onClose}
                   className="text-xs uppercase tracking-[0.2em] text-white/45 transition-colors hover:text-gold"
                 >
                   No thanks

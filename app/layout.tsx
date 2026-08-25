@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { BodyRouteClass } from "@/components/layout/BodyRouteClass";
 import { IntroGate } from "@/components/layout/IntroGate";
+import { AffordabilityPopupProvider } from "@/components/sections/AffordabilityPopup";
 import { defaultMetadata } from "@/lib/metadata";
 import { getStructuredData } from "@/lib/structured-data";
 import "./globals.css";
@@ -50,14 +51,16 @@ export default function RootLayout({
       </head>
       <body className="w-full overflow-x-hidden bg-warm-white">
         <IntroGate>
-          <BodyRouteClass />
-          <AnnouncementBar />
-          <Header />
-          <main className="w-full max-w-[100vw] overflow-x-hidden">
-            {children}
-          </main>
-          <Footer />
-          <MobileActionBar />
+          <AffordabilityPopupProvider>
+            <BodyRouteClass />
+            <AnnouncementBar />
+            <Header />
+            <main className="w-full max-w-[100vw] overflow-x-hidden">
+              {children}
+            </main>
+            <Footer />
+            <MobileActionBar />
+          </AffordabilityPopupProvider>
         </IntroGate>
       </body>
     </html>
