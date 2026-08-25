@@ -19,7 +19,7 @@ export function Footer() {
               alt={business.logo.alt}
               width={200}
               height={250}
-              className="h-auto w-40 md:w-48"
+              className="h-auto w-48 md:w-56"
             />
             <p className="mt-4 font-display text-lg italic text-gold">
               {business.tagline}

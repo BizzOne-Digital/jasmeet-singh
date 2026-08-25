@@ -63,7 +63,7 @@ export function CinematicIntro({ onComplete }: CinematicIntroProps) {
               width={180}
               height={225}
               priority
-              className="h-auto w-28 max-w-[60vw] sm:w-36 md:w-44"
+              className="h-auto w-32 max-w-[65vw] sm:w-40 md:w-52"
             />
           </motion.div>
 
