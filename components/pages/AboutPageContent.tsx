@@ -28,7 +28,7 @@ export function AboutPageContent() {
 
       <section className="bg-warm-white pb-16 pt-6 md:pb-24 md:pt-8">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-6 md:flex-row md:items-end md:justify-start md:gap-3 lg:gap-5">
+          <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:justify-start md:gap-3 lg:gap-5">
             <AnimatedReveal className="w-full md:w-auto md:shrink-0 md:-ml-2 lg:-ml-4">
               <div className="relative mx-auto md:mx-0">
                 <Image
@@ -43,8 +43,8 @@ export function AboutPageContent() {
               </div>
             </AnimatedReveal>
 
-            <AnimatedReveal delay={0.1} className="w-full md:max-w-md md:-ml-4 md:-mt-10 lg:max-w-lg lg:-ml-8 lg:-mt-14">
-              <div className="text-center md:pb-4 md:text-left lg:pb-6">
+            <AnimatedReveal delay={0.1} className="w-full md:max-w-md md:-ml-4 md:pt-4 lg:max-w-lg lg:-ml-8 lg:pt-6">
+              <div className="text-center md:text-left">
                 <span className="font-display text-[clamp(3rem,8vw,6rem)] leading-none text-black">
                   JASMEET
                 </span>
