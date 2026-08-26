@@ -209,7 +209,7 @@ export function Header() {
                   className="flex w-full items-center justify-center gap-2 border border-gold/80 py-3.5 text-sm font-semibold uppercase tracking-wider text-gold transition-colors hover:bg-gold/10"
                 >
                   <Calculator className="h-4 w-4" />
-                  Calculator
+                  Find Out What You Can Afford
                 </button>
                 <Link
                   href={getWhatsAppHref()}
